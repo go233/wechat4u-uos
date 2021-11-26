@@ -80,8 +80,20 @@ const contactProto = {
     this.RemarkName = convertEmoji(this.RemarkName)
     this.DisplayName = convertEmoji(this.DisplayName)
     this.isSelf = this.UserName === instance.user.UserName
-
+    this.alias = function(newAlias){
+      if(newAlias){
+        return instance.updateRemarkName(this.UserName, newAlias)
+      } else {
+        return this.RemarkName
+      }
+    }
     return this
+  },
+  name: function(){
+    return this.NickName
+  },
+  self: function(){
+    return this.isSelf
   },
   getDisplayName: function () {
     return getDisplayName(this)
@@ -119,6 +131,40 @@ export default function ContactFactory (instance) {
         }
       }
       return users
+    },
+    find: function(query) {
+      if(query&&query.name){
+        for (let key in instance.contacts) {
+          if (instance.contacts[key].NickName == query.name) {
+            return instance.contacts[key]
+          }
+        }
+      } else if (query&&query.alias){
+        for (let key in instance.contacts) {
+          if (instance.contacts[key].RemarkName == query.alias) {
+            return instance.contacts[key]
+          }
+        }
+      } else {
+        return;
+      }
+    },
+    findAll: function(query) {
+      let members=[]
+      if(query&&query.name){
+        for (let key in instance.contacts) {
+          if (instance.contacts[key].NickName == query.name) {
+            members.push(instance.contacts[key])
+          }
+        }
+      }else if(query&&query.alias){
+        for (let key in instance.contacts) {
+          if (instance.contacts[key].NickName == query.name) {
+            members.push(instance.contacts[key])
+          }
+        }
+      }
+      return members
     },
     isSelf: function (contact) {
       return contact.isSelf || contact.UserName === instance.user.UserName

@@ -48,6 +48,15 @@ class Wechat extends WechatCore {
     return members
   }
 
+  userSelf(){
+    for (let key in this.contacts) {
+      let member = this.contacts[key]
+      if(member.isSelf){
+        return member
+      }
+    }
+  }
+
   sendMsg (msg, toUserName) {
     if (typeof msg !== 'object') {
       return this.sendText(msg, toUserName)
