@@ -150,7 +150,6 @@ bot.on('message', async msg => {
   console.log(`----------${msg.getDisplayTime()}----------`)
   
   //bot.Room.findAll({topic:'测试群'})
-  
   console.log(`----------${msg.getDisplayTime()}----------end`)
   
 
@@ -176,6 +175,12 @@ bot.on('message', async msg => {
         //console.info(msg.room().MemberList)
         //await delay(20000)
         //msg.room().sendMsg("明天叫我起床吧" +Date.now(), msg.from())
+        //console.info("userSelf=====:", bot.userSelf(), bot.userSelf().name())
+        let contact = bot.Contact.find({"alias": 'O_O#2'})
+        let alias = contact.alias()
+        console.info("contact======:", contact.alias(),  alias)
+        await contact.alias('O_O#201')
+        //console.info("contact======:", contact)
       }
       break
     case bot.CONF.MSGTYPE_IMAGE:
