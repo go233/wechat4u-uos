@@ -80,8 +80,8 @@ export const assert = {
   }
 }
 
-export function getClientMsgId () {
-  return Math.ceil(Date.now()* 1e3)
+export function getClientMsgId (seed) {
+  return Math.ceil(Date.now()* seed)
 }
 
 export function getDeviceID () {

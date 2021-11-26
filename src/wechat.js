@@ -5,6 +5,7 @@ import _ from 'lodash'
 import WechatCore, { AlreadyLogoutError } from './core'
 import ContactFactory from './interface/contact'
 import MessageFactory from './interface/message'
+import RoomFactory from './interface/room'
 import { getCONF, isStandardBrowserEnv } from './util'
 
 const debug = _debug('wechat')
@@ -23,6 +24,7 @@ class Wechat extends WechatCore {
     this.contacts = {} // 所有联系人
     this.Contact = ContactFactory(this)
     this.Message = MessageFactory(this)
+    this.Room = RoomFactory(this)
     this.lastSyncTime = 0
     this.syncPollingId = 0
     this.syncErrorCount = 0
@@ -343,6 +345,7 @@ class Wechat extends WechatCore {
       } else {
         this.contacts[contact.UserName] = this.Contact.extend(contact)
       }
+      //debug(this.contacts)
     })
     this.emit('contacts-updated', contacts)
   }

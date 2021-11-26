@@ -1,4 +1,5 @@
 import {convertEmoji, formatNum} from '../util'
+import RoomFactory from './room'
 /* Message Object Example
 {
     "FromUserName": "",
@@ -32,9 +33,9 @@ import {convertEmoji, formatNum} from '../util'
 
 const messageProto = {
   init: function (instance) {
+    this._bot = instance
     this.MsgType = +this.MsgType
     this.isSendBySelf = this.FromUserName === instance.user.UserName || this.FromUserName === ''
-
     this.OriginalContent = this.Content
     if (this.FromUserName.indexOf('@@') === 0) {
       this.Content = this.Content.replace(/^@.*?(?=:)/, match => {
@@ -43,11 +44,12 @@ const messageProto = {
         })
         return user ? instance.Contact.getDisplayName(user) : match
       })
+      this.Room = RoomFactory(instance)
+      this.Room = this.Room.extend({UserName: this.FromUserName})
     }
-
+    this.OriginalUserName = !this.isSendBySelf ? this.OriginalContent.split(":")[0] : '' 
     this.Content = this.Content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/<br\/>/g, '\n')
     this.Content = convertEmoji(this.Content)
-
     return this
   },
   isSendBy: function (contact) {
@@ -59,7 +61,23 @@ const messageProto = {
   getDisplayTime: function () {
     var time = new Date(1e3 * this.CreateTime)
     return time.getHours() + ':' + formatNum(time.getMinutes(), 2)
-  }
+  },
+  room: function (){
+    return this.Room
+  },
+  self: function (){
+    return this.isSendBySelf
+  },
+  from: function () {
+    if(this.Room){
+      let user = this._bot.contacts[this.FromUserName].MemberList.find(member => {
+          return member.UserName === this.OriginalUserName
+        })
+      return user
+    }else{
+      return this._bot.contacts[this.FromUserName]
+    }
+  },
 }
 
 export default function MessageFactory (instance) {

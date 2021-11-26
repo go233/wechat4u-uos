@@ -10,11 +10,13 @@
     "clean": "rm -rf lib",
     "unit": "mocha test/unit.js --compilers js:babel-core/register",
     "test": "npm run lint && npm run unit",
-    "core": "cross-env DEBUG=wechat,core node run-core.js"
+    "core": "cross-env DEBUG=wechat,core node run-core.js",
+    "room": "cross-env DEBUG=wechat,core node run-room.js"
   },
   "dependencies": {
     "axios": "^0.18.1",
     "bl": "^1.1.2",
+    "crypto-js": "^4.1.1",
     "debug": "^2.2.0",
     "form-data": "^2.1.2",
     "lodash": "^4.17.11",

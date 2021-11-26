@@ -6,12 +6,13 @@
 - 为了更好的自定义我所想要的功能，没有在原项目上pr而是新开了项目
 - 本项目仅供个人研究所用，如对您有帮助，那么纯属巧合
 
-## Announcing wechat4u-uos v0.0.1
+## Announcing wechat4u-uos v0.0.2
 
 
 
 ### Changes
 
+- 增加room 群组的操作 方法见 run-room.js
 - 增加uos web协议适配让web协议重新可用
 
 
